@@ -1,4 +1,4 @@
-module github.com/ithaquaKr/to_obsidian_note
+module github.com/ithaquaKr/to-obsidian-note
 
 go 1.23.1
 
