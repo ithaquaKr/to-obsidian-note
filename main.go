@@ -9,13 +9,21 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	// Define flags
-	name := flag.String("name", "note", "Name of the output file")
-	tag := flag.String("tag", "", "Tag to be added to the note")
+	name := flag.String("n", "note", "Name of the output file")
+	tag := flag.String("t", "", "Tag to be added to the note")
 	flag.Parse()
+
+	// Load the .env file
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Errorf("Error loading .env file: %w", err)
+	}
 
 	// Read the path from the environment variable
 	savePath := os.Getenv("OBS_PATH")
@@ -24,10 +32,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Read content from stdin
+	// Read multi line content from stdin
 	reader := bufio.NewReader(os.Stdin)
-	// content, _ := reader.ReadString('\n')
-	// content = strings.TrimSpace(content)
 	var content string
 	for {
 		line, err := reader.ReadString('\n')
@@ -42,6 +48,8 @@ func main() {
 
 	// Generate the current date and time
 	currentTime := time.Now().Format("2006-01-02-Mon 15:04:05")
+
+	// TODO: Read template markdown content from markdown files, add flag to choose what template is used.
 
 	// Generate the Markdown content using the template
 	markdownContent := fmt.Sprintf(`---

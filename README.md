@@ -33,9 +33,55 @@ time: <timestamp>
 
 ## Install
 
+> TBD
+
 ## Usage
 
 ### Basic usage
+
+To create a new note, run the `to-obsidian-note` command with the following options:
+
+```bash
+to-obsidian-note -n "note" -t "ai"
+```
+
+After running the command, you will be prompted to enter the content of your note. Once you're done, press `Ctrl + D` (On Linux/macOS) or `Ctrl + Z` (On Windows) to finish and generate the note.
+
+Example
+
+```bash
+to-obsidian-note --name "prompt-engineering" --tag "ai,prompt"
+```
+
+After entering the note content and confirming, the following file will be generated.
+
+```markdown
+---
+id: prompt-engineering
+aliases:
+  - prompt-engineering
+tags:
+  - ai
+  - prompt
+time: 2024-09-15-Mon 10:30:00
+---
+
+This is a note about prompt engineering.
+```
+
+### Advance usage
+
+```bash
+echo "This is content of note" | to_obsidian_note -n "prompt-engineering" -t "ai,prompt"
+```
+
+```bash
+pbpaste | to_obsidian_note -n "take-note" -t "note"
+```
+
+```bash
+echo "Explain this content" | fabric -p ai | to_obsidian_note -n "explain" -t "ai"
+```
 
 ### Flags
 
@@ -49,7 +95,7 @@ time: <timestamp>
 Example
 
 ```bash
-OBS_PATH="${HOME}/my-obsidian/inbox/"
+OBS_PATH="User/your_user/obsidian/inbox/"
 ```
 
 ## Contribution
