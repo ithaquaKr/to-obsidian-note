@@ -6,11 +6,13 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
+	"os/user"
 	"path/filepath"
 	"time"
 
-	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 )
 
 func main() {
@@ -19,18 +21,24 @@ func main() {
 	tag := flag.String("t", "", "Tag to be added to the note")
 	flag.Parse()
 
-	// Load the .env file
-	err := godotenv.Load()
+	// Read configs
+	usr, err := user.Current()
 	if err != nil {
-		fmt.Errorf("Error loading .env file: %w", err)
+		log.Fatalf("Cannot read current user: ", err)
+	}
+	homeDir := usr.HomeDir
+
+	viper.AddConfigPath(fmt.Sprintf("%s/.config/to-obsidian-note", homeDir))
+	viper.SetConfigName("config")
+
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			log.Fatalf("Config file not found: ", err)
+		}
+		log.Fatalf("Error while read config: ", err)
 	}
 
-	// Read the path from the environment variable
-	savePath := os.Getenv("OBS_PATH")
-	if savePath == "" {
-		fmt.Println("Environment variable OBS_PATH is not set.")
-		os.Exit(1)
-	}
+	savePath := viper.GetString("SavePath")
 
 	// Read multi line content from stdin
 	reader := bufio.NewReader(os.Stdin)
