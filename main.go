@@ -64,8 +64,7 @@ func main() {
 id: %s
 aliases:
   - %s
-tags:
-  - %s
+tags: [%s]
 time: %s
 ---
 
